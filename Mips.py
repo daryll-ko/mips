@@ -24,33 +24,27 @@ class Mips:
                     self.program_counter = self.registers[inst.rs]
                 case 32:
                     self.registers[inst.rd] = \
-                        self.registers[inst.rs] + \
-                        self.registers[inst.rt]
+                        self.registers[inst.rs] + self.registers[inst.rt]
                     self.program_counter += 4
                 case 34:
                     self.registers[inst.rd] = \
-                        self.registers[inst.rs] - \
-                        self.registers[inst.rt]
+                        self.registers[inst.rs] - self.registers[inst.rt]
                     self.program_counter += 4
                 case 36:
                     self.registers[inst.rd] = \
-                        self.registers[inst.rs] & \
-                        self.registers[inst.rt]
+                        self.registers[inst.rs] & self.registers[inst.rt]
                     self.program_counter += 4
                 case 37:
                     self.registers[inst.rd] = \
-                        self.registers[inst.rs] | \
-                        self.registers[inst.rt]
+                        self.registers[inst.rs] | self.registers[inst.rt]
                     self.program_counter += 4
                 case 38:
                     self.registers[inst.rd] = \
-                        self.registers[inst.rs] ^ \
-                        self.registers[inst.rt]
+                        self.registers[inst.rs] ^ self.registers[inst.rt]
                     self.program_counter += 4
                 case 39:
                     self.registers[inst.rd] = \
-                        ~(self.registers[inst.rs] |
-                          self.registers[inst.rt])
+                        ~(self.registers[inst.rs] | self.registers[inst.rt])
                     self.program_counter += 4
                 case 42:
                     self.registers[inst.rd] = 1 if self.registers[inst.rs] < self.registers[inst.rt] else 0
@@ -86,10 +80,12 @@ class Mips:
                     self.registers[inst.rt] = self.registers[inst.rs] << 16
                     self.program_counter += 4
                 case 35:
-                    self.registers[inst.rt] = self.memory[inst.imm + self.registers[inst.rs]]
+                    self.registers[inst.rt] = self.memory[inst.imm +
+                                                          self.registers[inst.rs]]
                     self.program_counter += 4
                 case 43:
-                    self.memory[inst.imm + self.registers[inst.rs]] = self.registers[inst.rt]
+                    self.memory[inst.imm + self.registers[inst.rs]
+                                ] = self.registers[inst.rt]
                     self.program_counter += 4
                 case _:
                     print('?', inst.op)
