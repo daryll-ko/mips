@@ -1,4 +1,4 @@
-class Program:
+class Mips:
 
     def __init__(self) -> None:
         self.program_counter = 0x00400000
