@@ -1,13 +1,14 @@
 from data import *
 from parse import parse
 from Instruction import *
+from collections import defaultdict
 
 
 class Mips:
     def __init__(self) -> None:
         self.program_counter = 0x00400000
         self.registers = [0x00000000 for _ in range(32)]
-        self.memory = {}
+        self.memory = defaultdict(int)
 
     def load_program(self, program: list[int]) -> None:
         index = 0x00400000
@@ -25,6 +26,31 @@ class Mips:
                     self.registers[inst.rd] = \
                         self.registers[inst.rs] + \
                         self.registers[inst.rt]
+                    self.program_counter += 4
+                case 34:
+                    self.registers[inst.rd] = \
+                        self.registers[inst.rs] - \
+                        self.registers[inst.rt]
+                    self.program_counter += 4
+                case 36:
+                    self.registers[inst.rd] = \
+                        self.registers[inst.rs] & \
+                        self.registers[inst.rt]
+                    self.program_counter += 4
+                case 37:
+                    self.registers[inst.rd] = \
+                        self.registers[inst.rs] | \
+                        self.registers[inst.rt]
+                    self.program_counter += 4
+                case 38:
+                    self.registers[inst.rd] = \
+                        self.registers[inst.rs] ^ \
+                        self.registers[inst.rt]
+                    self.program_counter += 4
+                case 39:
+                    self.registers[inst.rd] = \
+                        ~(self.registers[inst.rs] |
+                          self.registers[inst.rt])
                     self.program_counter += 4
                 case 42:
                     self.registers[inst.rd] = 1 if self.registers[inst.rs] < self.registers[inst.rt] else 0
@@ -58,6 +84,12 @@ class Mips:
                     self.program_counter += 4
                 case 15:
                     self.registers[inst.rt] = self.registers[inst.rs] << 16
+                    self.program_counter += 4
+                case 35:
+                    self.registers[inst.rt] = self.memory[inst.imm + self.registers[inst.rs]]
+                    self.program_counter += 4
+                case 43:
+                    self.memory[inst.imm + self.registers[inst.rs]] = self.registers[inst.rt]
                     self.program_counter += 4
                 case _:
                     print('?', inst.op)
