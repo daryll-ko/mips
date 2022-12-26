@@ -112,5 +112,7 @@ Register file:
 
 Memory file:
 
-{nl.join([f"{key}: {value}" for key, value in self.memory.items()])}
+{nl.join(
+    [f"{format(key, '#010x')}: {format(value, '#010x')}{' (program)' if int('0x00400000', 16) <= key <= int('0x0ffffffc', 16) else ''}" for key, value in self.memory.items()]
+)}
 """
