@@ -17,7 +17,10 @@ class RType(Instruction):
     funct: int
 
     def __str__(self) -> str:
-        return f"{decode_r[self.funct]} {decode_reg[self.rd]}, {decode_reg[self.rs]}, {decode_reg[self.rt]}"
+        if self.funct == 8:  # jr
+            return f"{decode_r[self.funct]} {decode_reg[self.rs]}"
+        else:
+            return f"{decode_r[self.funct]} {decode_reg[self.rd]}, {decode_reg[self.rs]}, {decode_reg[self.rt]}"
 
 
 @dataclass
