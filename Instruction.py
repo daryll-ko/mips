@@ -28,10 +28,18 @@ class IType(Instruction):
     imm: int
 
     def __str__(self) -> str:
-        if 8 <= self.op <= 14:
+        if 4 <= self.op <= 5:
+            return f"{decode_op[self.op]} {decode_reg[self.rs]}, {decode_reg[self.rt]}, (PC+1)+4×({self.imm})"
+        elif 6 <= self.op <= 7:
+            return f"{decode_op[self.op]} {decode_reg[self.rs]}, (PC+1)+4×({self.imm})"
+        elif 8 <= self.op <= 14:
             return f"{decode_op[self.op]} {decode_reg[self.rt]}, {decode_reg[self.rs]}, {self.imm}"
+        elif self.op == 15:
+            return f"{decode_op[self.op]} {decode_reg[self.rt]}, {self.imm}"
         elif 32 <= self.op <= 43:
             return f"{decode_op[self.op]} {decode_reg[self.rt]}, {self.imm}({decode_reg[self.rs]})"
+        else:
+            return f"{self.op} has not been handled yet"
 
 
 @dataclass
