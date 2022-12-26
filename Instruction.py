@@ -1,4 +1,4 @@
-from data import decode_reg, decode_op, decode_r
+from data import *
 from dataclasses import dataclass
 
 
