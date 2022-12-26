@@ -109,4 +109,8 @@ class Mips:
 Register file:
 
 {nl.join([f"{decode_reg[i]}: {format(self.registers[i], '#010x')}" for i in range(32)])}
+
+Memory file:
+
+{nl.join([f"{key}: {value}" for key, value in self.memory.items()])}
 """
