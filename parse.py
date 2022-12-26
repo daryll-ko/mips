@@ -2,6 +2,14 @@ from typing import Union
 from Instruction import RType, IType, JType
 
 
+def from_2c(b: str) -> int:
+    N = len(b)
+    value = (1 if b[0] == '1' else 0) * -(1 << (N - 1))
+    for i in range(1, N):
+        value += (1 if b[i] == '1' else 0) * (1 << ((N - 1) - i))
+    return value
+
+
 def parse(machine_code: str) -> Union[RType, IType, JType]:
     machine_code = format(int(machine_code, 16), "032b")
 
@@ -22,5 +30,5 @@ def parse(machine_code: str) -> Union[RType, IType, JType]:
         op = int(machine_code[:6], 2)
         rs = int(machine_code[6:11], 2)
         rt = int(machine_code[11:16], 2)
-        imm = int(machine_code[16:], 2)
+        imm = from_2c(machine_code[16:])
         return IType(op, rs, rt, imm)
