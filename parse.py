@@ -1,5 +1,4 @@
-from typing import Union
-from Instruction import RType, IType, JType
+from Instruction import *
 
 
 def from_2c(b: str) -> int:
@@ -10,7 +9,7 @@ def from_2c(b: str) -> int:
     return value
 
 
-def parse(machine_code: str) -> Union[RType, IType, JType]:
+def parse(machine_code: str) -> Instruction:
     machine_code = format(int(machine_code, 16), "032b")
 
     if machine_code[:6] == "000000":  # R-type
