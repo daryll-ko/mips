@@ -1,4 +1,4 @@
 from parse import parse
 
-inst = parse("0x016D4022")
+inst = parse("0xAD310004")
 print(inst)
