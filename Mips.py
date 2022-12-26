@@ -56,14 +56,12 @@ class Mips:
             match inst.op:
                 case 4:
                     self.program_counter = \
-                        (self.program_counter + 4 + 4 * inst.imm) \
-                        if self.registers[inst.rs] == self.registers[inst.rt] \
-                        else (self.program_counter + 4)
+                        self.program_counter + 4 + \
+                        (4 * inst.imm if self.registers[inst.rs] == self.registers[inst.rt] else 0)
                 case 5:
                     self.program_counter = \
-                        (self.program_counter + 4 + 4 * inst.imm) \
-                        if self.registers[inst.rs] != self.registers[inst.rt] \
-                        else (self.program_counter + 4)
+                        self.program_counter + 4 + \
+                        (4 * inst.imm if self.registers[inst.rs] != self.registers[inst.rt] else 0)
                 case 8:
                     self.registers[inst.rt] = self.registers[inst.rs] + inst.imm
                     self.program_counter += 4
