@@ -4,12 +4,11 @@ from dataclasses import dataclass
 
 @dataclass
 class Instruction:
-    op: int
+    pass
 
 
 @dataclass
 class RType(Instruction):
-    op: int
     rs: int
     rt: int
     rd: int

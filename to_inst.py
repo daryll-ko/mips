@@ -18,7 +18,7 @@ def to_inst(machine_code: int) -> Instruction:
         rd = int(machine_code[16:21], 2)
         shamt = int(machine_code[21:26], 2)
         funct = int(machine_code[26:], 2)
-        return RType(0, rs, rt, rd, shamt, funct)
+        return RType(rs, rt, rd, shamt, funct)
 
     elif machine_code[:6] in ["000010", "000011"]:  # J-type
         op = int(machine_code[:6], 2)
