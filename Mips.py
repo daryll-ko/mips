@@ -105,17 +105,23 @@ class Mips:
 
     def __str__(self) -> str:
         nl = '\n'
+        regfile_output = []
+        for i in range(32):
+            if self.registers[i] != 0:
+                regfile_output.append(f"{decode_reg[i]}: {format(self.registers[i], '#010x')}")
+        memfile_output = []
+        for key, value in self.memory.items():
+            memfile_output.append(
+                f"{format(key, '#010x')}: {format(value, '#010x')}{' (program)' if int('0x00400000', 16) <= key <= int('0x0ffffffc', 16) else ''}")
         return f"""Program counter:
 
 {format(self.program_counter, "#010x")}
 
 Register file:
 
-{nl.join([f"{decode_reg[i]}: {format(self.registers[i], '#010x')}" for i in range(32)])}
+{nl.join(regfile_output) if len(regfile_output) > 0 else '* All registers contain 0. *'}
 
 Memory file:
 
-{nl.join(
-    [f"{format(key, '#010x')}: {format(value, '#010x')}{' (program)' if int('0x00400000', 16) <= key <= int('0x0ffffffc', 16) else ''}" for key, value in self.memory.items()]
-)}
+{nl.join(memfile_output)}
 """
