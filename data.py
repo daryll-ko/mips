@@ -36,7 +36,7 @@ decode_reg = bidict({
 })
 
 decode_op = bidict({
-    1: "bltz|bgez",
+    1: ("bltz", "bgez"),
     2: "j",
     3: "jal",
     4: "beq",
@@ -51,8 +51,8 @@ decode_op = bidict({
     13: "ori",
     14: "xori",
     15: "lui",
-    16: "mfc0|mtc0",
-    17: "bclf|bclt",
+    16: ("mfc0", "mtc0"),
+    17: ("bclf", "bclt"),
     28: "mul",
     32: "lb",
     33: "lh",
