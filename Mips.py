@@ -98,7 +98,7 @@ class Mips:
 
     def run_program(self) -> None:
         while self.program_counter in self.memory:
-            inst = to_inst(hex(self.memory[self.program_counter]))
+            inst = to_inst(self.memory[self.program_counter])
             self.handle_inst(inst)
             print(self)
             print(f"{'-' * 40}\n")

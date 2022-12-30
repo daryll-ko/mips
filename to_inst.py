@@ -9,8 +9,8 @@ def from_2c(b: str) -> int:
     return value
 
 
-def to_inst(machine_code: str) -> Instruction:
-    machine_code = format(int(machine_code, 16), "032b")
+def to_inst(machine_code: int) -> Instruction:
+    machine_code = format(machine_code, "032b")
 
     if machine_code[:6] == "000000":  # R-type
         rs = int(machine_code[6:11], 2)
