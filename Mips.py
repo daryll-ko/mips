@@ -16,6 +16,9 @@ class Mips:
             self.memory[index] = instruction
             index += 4
 
+    def increment_pc(self, by: int = 4) -> None:
+        self.program_counter += by
+
     def handle_inst(self, inst: Instruction) -> None:
         print(f"Instruction: {inst}\n")
         if isinstance(inst, RType):
@@ -25,33 +28,33 @@ class Mips:
                 case 32:
                     self.registers[inst.rd] = \
                         self.registers[inst.rs] + self.registers[inst.rt]
-                    self.program_counter += 4
+                    self.increment_pc()
                 case 34:
                     self.registers[inst.rd] = \
                         self.registers[inst.rs] - self.registers[inst.rt]
-                    self.program_counter += 4
+                    self.increment_pc()
                 case 36:
                     self.registers[inst.rd] = \
                         self.registers[inst.rs] & self.registers[inst.rt]
-                    self.program_counter += 4
+                    self.increment_pc()
                 case 37:
                     self.registers[inst.rd] = \
                         self.registers[inst.rs] | self.registers[inst.rt]
-                    self.program_counter += 4
+                    self.increment_pc()
                 case 38:
                     self.registers[inst.rd] = \
                         self.registers[inst.rs] ^ self.registers[inst.rt]
-                    self.program_counter += 4
+                    self.increment_pc()
                 case 39:
                     self.registers[inst.rd] = \
                         ~(self.registers[inst.rs] | self.registers[inst.rt])
-                    self.program_counter += 4
+                    self.increment_pc()
                 case 42:
                     self.registers[inst.rd] = 1 if self.registers[inst.rs] < self.registers[inst.rt] else 0
-                    self.program_counter += 4
+                    self.increment_pc()
                 case _:
                     print('?', inst.funct)
-                    self.program_counter += 4
+                    self.increment_pc()
         elif isinstance(inst, IType):
             match inst.op:
                 case 4:
@@ -64,32 +67,30 @@ class Mips:
                         (4 * inst.imm if self.registers[inst.rs] != self.registers[inst.rt] else 0)
                 case 8:
                     self.registers[inst.rt] = self.registers[inst.rs] + inst.imm
-                    self.program_counter += 4
+                    self.increment_pc()
                 case 12:
                     self.registers[inst.rt] = self.registers[inst.rs] & inst.imm
-                    self.program_counter += 4
+                    self.increment_pc()
                 case 13:
                     self.registers[inst.rt] = self.registers[inst.rs] | inst.imm
-                    self.program_counter += 4
+                    self.increment_pc()
                 case 14:
                     self.registers[inst.rt] = self.registers[inst.rs] ^ inst.imm
-                    self.program_counter += 4
+                    self.increment_pc()
                 case 15:
                     self.registers[inst.rt] = self.registers[inst.rs] << 16
-                    self.program_counter += 4
+                    self.increment_pc()
                 case 35:
-                    self.registers[inst.rt] = self.memory[inst.imm +
-                                                          self.registers[inst.rs]]
-                    self.program_counter += 4
+                    self.registers[inst.rt] = self.memory[inst.imm + self.registers[inst.rs]]
+                    self.increment_pc()
                 case 43:
-                    self.memory[inst.imm + self.registers[inst.rs]
-                                ] = self.registers[inst.rt]
-                    self.program_counter += 4
+                    self.memory[inst.imm + self.registers[inst.rs]] = self.registers[inst.rt]
+                    self.increment_pc()
                 case _:
                     print('?', inst.op)
-                    self.program_counter += 4
+                    self.increment_pc()
         else:
-            self.program_counter += 4
+            self.increment_pc()
 
     def run_program(self) -> None:
         while self.program_counter in self.memory:
