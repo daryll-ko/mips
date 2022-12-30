@@ -1,5 +1,5 @@
 from data import *
-from parse import parse
+from to_inst import to_inst
 from Instruction import *
 from collections import defaultdict
 
@@ -60,11 +60,13 @@ class Mips:
                 case 4:
                     self.program_counter = \
                         self.program_counter + 4 + \
-                        (4 * inst.imm if self.registers[inst.rs] == self.registers[inst.rt] else 0)
+                        (4 * inst.imm if self.registers[inst.rs]
+                         == self.registers[inst.rt] else 0)
                 case 5:
                     self.program_counter = \
                         self.program_counter + 4 + \
-                        (4 * inst.imm if self.registers[inst.rs] != self.registers[inst.rt] else 0)
+                        (4 * inst.imm if self.registers[inst.rs]
+                         != self.registers[inst.rt] else 0)
                 case 8:
                     self.registers[inst.rt] = self.registers[inst.rs] + inst.imm
                     self.increment_pc()
@@ -81,10 +83,12 @@ class Mips:
                     self.registers[inst.rt] = self.registers[inst.rs] << 16
                     self.increment_pc()
                 case 35:
-                    self.registers[inst.rt] = self.memory[inst.imm + self.registers[inst.rs]]
+                    self.registers[inst.rt] = self.memory[inst.imm +
+                                                          self.registers[inst.rs]]
                     self.increment_pc()
                 case 43:
-                    self.memory[inst.imm + self.registers[inst.rs]] = self.registers[inst.rt]
+                    self.memory[inst.imm + self.registers[inst.rs]
+                                ] = self.registers[inst.rt]
                     self.increment_pc()
                 case _:
                     print('?', inst.op)
@@ -94,7 +98,7 @@ class Mips:
 
     def run_program(self) -> None:
         while self.program_counter in self.memory:
-            inst = parse(hex(self.memory[self.program_counter]))
+            inst = to_inst(hex(self.memory[self.program_counter]))
             self.handle_inst(inst)
             print(self)
             print(f"{'-' * 40}\n")
