@@ -11,11 +11,23 @@ def parse_asm(asm: str) -> int:
           else 0)
     if len(args) >= 3:  # not J-type
         if op == 0:  # R-type
-            rs = decode_reg.inverse[args[2]][0]
-            rt = decode_reg.inverse[args[3]][0]
-            rd = decode_reg.inverse[args[1]][0]
-            shamt = 0
             funct = decode_r.inverse[args[0]][0]
+            rs, rt, rd, shamt = -1, -1, -1, -1
+            if 0 <= funct <= 3:
+                rs = 0
+                rt = decode_reg.inverse[args[2]][0]
+                rd = decode_reg.inverse[args[1]][0]
+                shamt = int(args[3])
+            elif 4 <= funct <= 7:
+                rs = decode_reg.inverse[args[3]][0]
+                rt = decode_reg.inverse[args[2]][0]
+                rd = decode_reg.inverse[args[1]][0]
+                shamt = 0
+            else:
+                rs = decode_reg.inverse[args[2]][0]
+                rt = decode_reg.inverse[args[3]][0]
+                rd = decode_reg.inverse[args[1]][0]
+                shamt = 0
             return (rs << 21) + (rt << 16) + (rd << 11) + (shamt << 6) + funct
         else:  # I-type
             if op == 35:  # lw

@@ -16,7 +16,15 @@ class RType(Instruction):
     funct: int
 
     def __str__(self) -> str:
-        if self.funct == 8:  # jr
+        if self.funct not in decode_r.keys():
+            raise ValueError("Invalid funct value...")
+        elif 0 <= self.funct <= 3:
+            return (f"{decode_r[self.funct]} {decode_reg[self.rd]}"
+                    f", {decode_reg[self.rt]}, {self.shamt}")
+        elif 4 <= self.funct <= 7:
+            return (f"{decode_r[self.funct]} {decode_reg[self.rd]}"
+                    f", {decode_reg[self.rt]}, {decode_reg[self.rs]}")
+        elif self.funct == 8:  # jr
             return f"{decode_r[self.funct]} {decode_reg[self.rs]}"
         else:
             return (f"{decode_r[self.funct]} {decode_reg[self.rd]}"

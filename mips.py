@@ -62,7 +62,7 @@ class Mips:
                     )
                     self.increment_pc()
                 case _:
-                    print('?', inst.funct)
+                    print("no op executed")
                     self.increment_pc()
         elif isinstance(inst, IType):
             match inst.op:
