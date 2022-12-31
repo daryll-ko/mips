@@ -49,7 +49,7 @@ class IType(Instruction):
             return f"{self.op} has not been handled yet"
 
 
-@ dataclass
+@dataclass
 class JType(Instruction):
     op: int
     addr: int
