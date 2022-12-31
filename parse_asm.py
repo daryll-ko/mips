@@ -11,7 +11,7 @@ def parse_asm(asm: str) -> int:
     op = (decode_op.inverse[args[0]][0]
           if args[0] in decode_op.inverse.keys()
           else 0)
-    if op == 0:
+    if op == 0:  # R-type
         funct = decode_funct.inverse[args[0]][0]
         rs, rt, rd, shamt = -1, -1, -1, -1
         if 0 <= funct <= 3:
