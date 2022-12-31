@@ -175,9 +175,10 @@ class Mips:
                     )
                     self.increment_pc()
                 case _:
-                    print('?', inst.op)
+                    print("no op executed")
                     self.increment_pc()
         else:
+            print("no op executed")
             self.increment_pc()
 
     def run_program(self) -> None:

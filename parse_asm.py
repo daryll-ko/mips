@@ -49,7 +49,12 @@ def parse_asm(asm: str) -> int:
             shamt = 0
         return (rs << 21) + (rt << 16) + (rd << 11) + (shamt << 6) + funct
     elif len(args) >= 3:  # I-type
-        if op == 35:  # lw
+        rs, rt, imm = -1, -1, -1
+        if op == 15:  # lui
+            rs = 0
+            rt = decode_reg.inverse[args[1]][0]
+            imm = int(args[2])
+        elif op == 35:  # lw
             pass
         elif op == 43:  # sw
             pass
@@ -57,6 +62,6 @@ def parse_asm(asm: str) -> int:
             rs = decode_reg.inverse[args[2]][0]
             rt = decode_reg.inverse[args[1]][0]
             imm = int(args[3])
-            return (op << 26) + (rs << 21) + (rt << 16) + imm
+        return (op << 26) + (rs << 21) + (rt << 16) + imm
     else:  # J-type
         pass
