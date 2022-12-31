@@ -1,4 +1,5 @@
-# Reference: https://stackoverflow.com/questions/3318625/how-to-implement-an-efficient-bidirectional-hash-table
+# Reference:
+# https://stackoverflow.com/questions/3318625/how-to-implement-an-efficient-bidirectional-hash-table
 
 class bidict(dict):
     def __init__(self, *args, **kwargs):

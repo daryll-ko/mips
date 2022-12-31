@@ -1,4 +1,4 @@
-from Instruction import *
+from Instruction import RType, IType, JType
 
 
 def from_2c(b: str) -> int:
@@ -9,7 +9,7 @@ def from_2c(b: str) -> int:
     return value
 
 
-def to_inst(machine_code: int) -> Instruction:
+def to_inst(machine_code: int) -> RType | IType | JType:
     machine_code = format(machine_code, "032b")
 
     if machine_code[:6] == "000000":  # R-type

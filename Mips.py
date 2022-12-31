@@ -1,6 +1,6 @@
-from data import *
+from data import decode_reg
 from to_inst import to_inst
-from Instruction import *
+from Instruction import RType, IType, JType
 from collections import defaultdict
 
 
@@ -19,38 +19,47 @@ class Mips:
     def increment_pc(self, by: int = 4) -> None:
         self.program_counter += by
 
-    def handle_inst(self, inst: Instruction) -> None:
+    def handle_inst(self, inst: RType | IType | JType) -> None:
         print(f"Instruction: {inst}\n")
         if isinstance(inst, RType):
             match inst.funct:
                 case 8:
                     self.program_counter = self.registers[inst.rs]
                 case 32:
-                    self.registers[inst.rd] = \
+                    self.registers[inst.rd] = (
                         self.registers[inst.rs] + self.registers[inst.rt]
+                    )
                     self.increment_pc()
                 case 34:
-                    self.registers[inst.rd] = \
+                    self.registers[inst.rd] = (
                         self.registers[inst.rs] - self.registers[inst.rt]
+                    )
                     self.increment_pc()
                 case 36:
-                    self.registers[inst.rd] = \
+                    self.registers[inst.rd] = (
                         self.registers[inst.rs] & self.registers[inst.rt]
+                    )
                     self.increment_pc()
                 case 37:
-                    self.registers[inst.rd] = \
+                    self.registers[inst.rd] = (
                         self.registers[inst.rs] | self.registers[inst.rt]
+                    )
                     self.increment_pc()
                 case 38:
-                    self.registers[inst.rd] = \
+                    self.registers[inst.rd] = (
                         self.registers[inst.rs] ^ self.registers[inst.rt]
+                    )
                     self.increment_pc()
                 case 39:
-                    self.registers[inst.rd] = \
+                    self.registers[inst.rd] = (
                         ~(self.registers[inst.rs] | self.registers[inst.rt])
+                    )
                     self.increment_pc()
                 case 42:
-                    self.registers[inst.rd] = 1 if self.registers[inst.rs] < self.registers[inst.rt] else 0
+                    self.registers[inst.rd] = (
+                        1 if self.registers[inst.rs] < self.registers[inst.rt]
+                        else 0
+                    )
                     self.increment_pc()
                 case _:
                     print('?', inst.funct)
@@ -58,37 +67,51 @@ class Mips:
         elif isinstance(inst, IType):
             match inst.op:
                 case 4:
-                    self.program_counter = \
-                        self.program_counter + 4 + \
-                        (4 * inst.imm if self.registers[inst.rs]
-                         == self.registers[inst.rt] else 0)
+                    self.program_counter += 4 + (
+                        4 * inst.imm
+                        if self.registers[inst.rs] == self.registers[inst.rt]
+                        else 0
+                    )
                 case 5:
-                    self.program_counter = \
-                        self.program_counter + 4 + \
-                        (4 * inst.imm if self.registers[inst.rs]
-                         != self.registers[inst.rt] else 0)
+                    self.program_counter += 4 + (
+                        4 * inst.imm
+                        if self.registers[inst.rs] != self.registers[inst.rt]
+                        else 0
+                    )
                 case 8:
-                    self.registers[inst.rt] = self.registers[inst.rs] + inst.imm
+                    self.registers[inst.rt] = (
+                        self.registers[inst.rs] + inst.imm
+                    )
                     self.increment_pc()
                 case 12:
-                    self.registers[inst.rt] = self.registers[inst.rs] & inst.imm
+                    self.registers[inst.rt] = (
+                        self.registers[inst.rs] & inst.imm
+                    )
                     self.increment_pc()
                 case 13:
-                    self.registers[inst.rt] = self.registers[inst.rs] | inst.imm
+                    self.registers[inst.rt] = (
+                        self.registers[inst.rs] | inst.imm
+                    )
                     self.increment_pc()
                 case 14:
-                    self.registers[inst.rt] = self.registers[inst.rs] ^ inst.imm
+                    self.registers[inst.rt] = (
+                        self.registers[inst.rs] ^ inst.imm
+                    )
                     self.increment_pc()
                 case 15:
-                    self.registers[inst.rt] = self.registers[inst.rs] << 16
+                    self.registers[inst.rt] = (
+                        self.registers[inst.rs] << 16
+                    )
                     self.increment_pc()
                 case 35:
-                    self.registers[inst.rt] = self.memory[inst.imm +
-                                                          self.registers[inst.rs]]
+                    self.registers[inst.rt] = (
+                        self.memory[inst.imm + self.registers[inst.rs]]
+                    )
                     self.increment_pc()
                 case 43:
-                    self.memory[inst.imm + self.registers[inst.rs]
-                                ] = self.registers[inst.rt]
+                    self.memory[inst.imm + self.registers[inst.rs]] = (
+                        self.registers[inst.rt]
+                    )
                     self.increment_pc()
                 case _:
                     print('?', inst.op)
@@ -108,18 +131,28 @@ class Mips:
         regfile_output = []
         for i in range(32):
             if self.registers[i] != 0:
-                regfile_output.append(f"{decode_reg[i]}: {format(self.registers[i], '#010x')}")
+                regfile_output.append(
+                    f"{decode_reg[i]}: {format(self.registers[i], '#010x')}")
         memfile_output = []
         for key, value in self.memory.items():
+            part_of_program = (
+                int('0x00400000', 16) <= key <= int('0x0ffffffc', 16)
+            )
             memfile_output.append(
-                f"{format(key, '#010x')}: {format(value, '#010x')}{' (program)' if int('0x00400000', 16) <= key <= int('0x0ffffffc', 16) else ''}")
+                f"{format(key, '#010x')}: {format(value, '#010x')}"
+                f"{' (program)' if part_of_program else ''}"
+            )
         return f"""Program counter:
 
 {format(self.program_counter, "#010x")}
 
 Register file:
 
-{nl.join(regfile_output) if len(regfile_output) > 0 else '* All registers contain 0. *'}
+{
+nl.join(regfile_output)
+if len(regfile_output) > 0
+else "(All registers contain 0.)"
+}
 
 Memory file:
 

@@ -1,5 +1,4 @@
-from Instruction import *
-from data import *
+from data import decode_reg, decode_op, decode_r
 
 
 def parse_asm(asm: str) -> int:
@@ -7,7 +6,9 @@ def parse_asm(asm: str) -> int:
     for i in range(len(args)):
         if args[i][-1] == ',':
             args[i] = args[i][:-1]
-    op = decode_op.inverse[args[0]][0] if args[0] in decode_op.inverse.keys() else 0
+    op = (decode_op.inverse[args[0]][0]
+          if args[0] in decode_op.inverse.keys()
+          else 0)
     if len(args) >= 3:  # not J-type
         if op == 0:  # R-type
             rs = decode_reg.inverse[args[2]][0]
