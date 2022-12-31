@@ -19,6 +19,8 @@ class Mips:
         self.program_counter = 0x00400000
         self.registers = [0x00000000 for _ in range(32)]
         self.memory = defaultdict(int)
+        self.hi = 0x00000000
+        self.lo = 0x00000000
 
     def load_program(self, program: list[int]) -> None:
         index = 0x00400000
@@ -61,6 +63,11 @@ class Mips:
                     )
                 case 8:
                     self.program_counter = self.registers[inst.rs]
+                case 24 | 25:
+                    product = self.registers[inst.rs] * self.registers[inst.rt]
+                    self.hi = product >> 32
+                    self.lo = product & 0xFFFFFFFF
+                    self.increment_pc()
                 case 32 | 33:
                     self.registers[inst.rd] = (
                         self.registers[inst.rs] + self.registers[inst.rt]
