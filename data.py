@@ -66,7 +66,7 @@ decode_op = bidict({
     56: "swcl",
 })
 
-decode_r = bidict({
+decode_funct = bidict({
     0: "sll",
     2: "srl",
     3: "sra",

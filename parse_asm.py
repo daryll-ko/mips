@@ -1,4 +1,4 @@
-from data import decode_reg, decode_op, decode_r
+from data import decode_reg, decode_op, decode_funct
 
 
 def parse_asm(asm: str) -> int:
@@ -11,7 +11,7 @@ def parse_asm(asm: str) -> int:
           else 0)
     if len(args) >= 3:
         if op == 0:  # R-type
-            funct = decode_r.inverse[args[0]][0]
+            funct = decode_funct.inverse[args[0]][0]
             rs, rt, rd, shamt = -1, -1, -1, -1
             if 0 <= funct <= 3:
                 rs = 0
