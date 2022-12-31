@@ -26,6 +26,10 @@ class RType(Instruction):
                     f", {decode_reg[self.rt]}, {decode_reg[self.rs]}")
         elif self.funct == 8:  # jr
             return f"{decode_funct[self.funct]} {decode_reg[self.rs]}"
+        elif self.funct == 16 or self.funct == 18:
+            return f"{decode_funct[self.funct]} {decode_reg[self.rd]}"
+        elif self.funct == 17 or self.funct == 19:
+            return f"{decode_funct[self.funct]} {decode_reg[self.rs]}"
         elif 24 <= self.funct <= 25:
             return (f"{decode_funct[self.funct]} {decode_reg[self.rs]}"
                     f", {decode_reg[self.rt]}")

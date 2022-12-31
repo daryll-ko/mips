@@ -69,6 +69,18 @@ class Mips:
                     self.increment_pc()
                 case 8:
                     self.program_counter = self.registers[inst.rs]
+                case 16:
+                    self.registers[inst.rd] = self.hi
+                    self.increment_pc()
+                case 17:
+                    self.hi = self.registers[inst.rs]
+                    self.increment_pc()
+                case 18:
+                    self.registers[inst.rd] = self.lo
+                    self.increment_pc()
+                case 19:
+                    self.lo = self.registers[inst.rs]
+                    self.increment_pc()
                 case 24 | 25:
                     product = self.registers[inst.rs] * self.registers[inst.rt]
                     self.hi = product >> 32
