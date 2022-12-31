@@ -1,7 +1,7 @@
 from instruction import RType, IType, JType
 
 
-def from_2c(b: str) -> int:
+def parse_2c(b: str) -> int:
     N = len(b)
     b = b[::-1]
     value = 0
@@ -30,5 +30,5 @@ def to_inst(machine_code: int) -> RType | IType | JType:
         op = int(machine_code[:6], 2)
         rs = int(machine_code[6:11], 2)
         rt = int(machine_code[11:16], 2)
-        imm = from_2c(machine_code[16:])
+        imm = parse_2c(machine_code[16:])
         return IType(op, rs, rt, imm)
