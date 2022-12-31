@@ -3,9 +3,10 @@ from instruction import RType, IType, JType
 
 def from_2c(b: str) -> int:
     N = len(b)
-    value = (1 if b[0] == '1' else 0) * -(1 << (N - 1))
-    for i in range(1, N):
-        value += (1 if b[i] == '1' else 0) * (1 << ((N - 1) - i))
+    b = reversed(b)
+    value = 0
+    for i in range(N):
+        value += (int(b[i]) << i) * (-1 if i == N - 1 else 1)
     return value
 
 
