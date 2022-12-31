@@ -1,3 +1,5 @@
+import re
+
 from data import decode_reg, decode_op, decode_funct
 
 
@@ -54,10 +56,11 @@ def parse_asm(asm: str) -> int:
             rs = 0
             rt = decode_reg.inverse[args[1]][0]
             imm = int(args[2])
-        elif op == 35:  # lw
-            pass
-        elif op == 43:  # sw
-            pass
+        elif op == 35 or op == 43:  # lw/sw
+            rt = decode_reg.inverse[args[1]][0]
+            regex_result = re.search(r"(-?\d+)\((\$[0-9a-z][0-9a-z]?)\)", args[2])
+            rs = decode_reg.inverse[regex_result.group(2)][0]
+            imm = int(regex_result.group(1))
         else:
             rs = decode_reg.inverse[args[2]][0]
             rt = decode_reg.inverse[args[1]][0]
