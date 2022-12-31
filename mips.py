@@ -88,7 +88,7 @@ class Mips:
                         if self.registers[inst.rs] != self.registers[inst.rt]
                         else 0
                     )
-                case 8:
+                case 8 | 9:
                     self.registers[inst.rt] = (
                         self.registers[inst.rs] + inst.imm
                     )
