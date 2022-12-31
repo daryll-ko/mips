@@ -22,6 +22,11 @@ def parse_asm(asm: str) -> int:
             rt = decode_reg.inverse[args[2]][0]
             rd = decode_reg.inverse[args[1]][0]
             shamt = 0
+        elif funct == 8:
+            rs = decode_reg.inverse[args[1]][0]
+            rt = 0
+            rd = 0
+            shamt = 0
         elif funct == 16 or funct == 18:
             rs = 0
             rt = 0
