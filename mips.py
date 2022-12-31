@@ -39,28 +39,34 @@ class Mips:
                     self.registers[inst.rd] = (
                         self.registers[inst.rt] << inst.shamt
                     )
+                    self.increment_pc()
                 case 2:
                     unsigned_value = self.registers[inst.rt] & 0xFFFFFFFF
                     self.registers[inst.rd] = (
                         unsigned_value >> inst.shamt
                     )
+                    self.increment_pc()
                 case 3:
                     self.registers[inst.rd] = (
                         self.registers[inst.rt] >> inst.shamt
                     )
+                    self.increment_pc()
                 case 4:
                     self.registers[inst.rd] = (
                         self.registers[inst.rt] << self.registers[inst.rs]
                     )
+                    self.increment_pc()
                 case 6:
                     unsigned_value = self.registers[inst.rt] & 0xFFFFFFFF
                     self.registers[inst.rd] = (
                         unsigned_value >> self.registers[inst.rs]
                     )
+                    self.increment_pc()
                 case 7:
                     self.registers[inst.rd] = (
                         self.registers[inst.rt] >> self.registers[inst.rs]
                     )
+                    self.increment_pc()
                 case 8:
                     self.program_counter = self.registers[inst.rs]
                 case 24 | 25:
