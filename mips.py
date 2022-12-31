@@ -33,6 +33,32 @@ class Mips:
         print(f"Instruction: {inst}\n")
         if isinstance(inst, RType):
             match inst.funct:
+                case 0:
+                    self.registers[inst.rd] = (
+                        self.registers[inst.rt] << inst.shamt
+                    )
+                case 2:
+                    unsigned_value = self.registers[inst.rt] & 0xFFFFFFFF
+                    self.registers[inst.rd] = (
+                        unsigned_value >> inst.shamt
+                    )
+                case 3:
+                    self.registers[inst.rd] = (
+                        self.registers[inst.rt] >> inst.shamt
+                    )
+                case 4:
+                    self.registers[inst.rd] = (
+                        self.registers[inst.rt] << self.registers[inst.rs]
+                    )
+                case 6:
+                    unsigned_value = self.registers[inst.rt] & 0xFFFFFFFF
+                    self.registers[inst.rd] = (
+                        unsigned_value >> self.registers[inst.rs]
+                    )
+                case 7:
+                    self.registers[inst.rd] = (
+                        self.registers[inst.rt] >> self.registers[inst.rs]
+                    )
                 case 8:
                     self.program_counter = self.registers[inst.rs]
                 case 32 | 33:
