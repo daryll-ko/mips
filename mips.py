@@ -1,17 +1,8 @@
 from data import decode_reg
 from to_inst import to_inst
+from to_hex_str import to_hex_str
 from instruction import RType, IType, JType
 from collections import defaultdict
-
-
-def to_hex_str(n: int) -> str:
-    s = ""
-    for i in range(0, 32, 4):
-        nibble_value = 0
-        for j in range(4):
-            nibble_value += ((n >> (i + j)) & 1) << j
-        s += "0123456789ABCDEF"[nibble_value]
-    return "0x" + s[::-1]
 
 
 class Mips:
