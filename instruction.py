@@ -46,7 +46,9 @@ class IType(Instruction):
     imm: int
 
     def __str__(self) -> str:
-        if 4 <= self.op <= 5:
+        if self.op not in decode_op.keys():
+            raise ValueError("Invalid op value...")
+        elif 4 <= self.op <= 5:
             return (f"{decode_op[self.op]} {decode_reg[self.rs]}"
                     f", {decode_reg[self.rt]}, (PC+1)+4×({self.imm})")
         elif 6 <= self.op <= 7:
