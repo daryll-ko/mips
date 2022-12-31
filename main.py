@@ -1,12 +1,10 @@
 import argparse
 
-from Mips import Mips
+from mips import Mips
 from parse_asm import parse_asm
 
 parser = argparse.ArgumentParser(description="Simulate MIPS code!")
-
 parser.add_argument("-a", "--asm", dest="is_assembly", action="store_true")
-
 args = parser.parse_args()
 
 mips = Mips()

@@ -1,6 +1,6 @@
 from data import decode_reg
 from to_inst import to_inst
-from Instruction import RType, IType, JType
+from instruction import RType, IType, JType
 from collections import defaultdict
 
 

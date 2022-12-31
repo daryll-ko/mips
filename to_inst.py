@@ -1,4 +1,4 @@
-from Instruction import RType, IType, JType
+from instruction import RType, IType, JType
 
 
 def from_2c(b: str) -> int:
