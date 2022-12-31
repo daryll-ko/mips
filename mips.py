@@ -10,7 +10,7 @@ def to_hex_str(n: int) -> str:
         nibble_value = 0
         for j in range(4):
             nibble_value += ((n >> (i + j)) & 1) << j
-        s += "0123456789abcdef"[nibble_value]
+        s += "0123456789ABCDEF"[nibble_value]
     return "0x" + s[::-1]
 
 
@@ -146,15 +146,15 @@ class Mips:
         memfile_output = []
         for key, value in self.memory.items():
             part_of_program = (
-                int('0x00400000', 16) <= key <= int('0x0ffffffc', 16)
+                int('0x00400000', 16) <= key <= int('0x0FFFFFFC', 16)
             )
             memfile_output.append(
-                f"{format(key, '#010x')}: {to_hex_str(value)}"
+                f"{to_hex_str(key)}: {to_hex_str(value)}"
                 f"{' (program)' if part_of_program else ''}"
             )
         return f"""Program counter:
 
-{format(self.program_counter, "#010x")}
+{to_hex_str(self.program_counter)}
 
 Register file:
 
