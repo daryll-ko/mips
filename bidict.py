@@ -6,13 +6,13 @@ class bidict(dict):
         super(bidict, self).__init__(*args, **kwargs)
         self.inverse = {}
         for key, value in self.items():
-            self.inverse.setdefault(value, []).append(key)
+            self.inverse[value] = key
 
     def __setitem__(self, key, value):
         if key in self:
             self.inverse[self[key]].remove(key)
         super(bidict, self).__setitem__(key, value)
-        self.inverse.setdefault(value, []).append(key)
+        self.inverse[value] = key
 
     def __delitem__(self, key):
         self.inverse.setdefault(self[key], []).remove(key)
