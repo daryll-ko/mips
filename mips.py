@@ -2,13 +2,22 @@ from data import decode_reg
 from to_inst import to_inst
 from instruction import RType, IType, JType
 from collections import defaultdict
-from two_c_num import TwoCNumber
+
+
+def to_hex_str(n: int) -> str:
+    s = ""
+    for i in range(0, 32, 4):
+        nibble_value = 0
+        for j in range(4):
+            nibble_value += ((n >> (i + j)) & 1) << j
+        s += "0123456789abcdef"[nibble_value]
+    return "0x" + s[::-1]
 
 
 class Mips:
     def __init__(self) -> None:
         self.program_counter = 0x00400000
-        self.registers = [TwoCNumber(0) for _ in range(32)]
+        self.registers = [0x00000000 for _ in range(32)]
         self.memory = defaultdict(int)
 
     def load_program(self, program: list[int]) -> None:
@@ -66,7 +75,6 @@ class Mips:
                     print("no op executed")
                     self.increment_pc()
         elif isinstance(inst, IType):
-            imm_as_2c = TwoCNumber(inst.imm)
             match inst.op:
                 case 4:
                     self.program_counter += 4 + (
@@ -82,22 +90,22 @@ class Mips:
                     )
                 case 8:
                     self.registers[inst.rt] = (
-                        self.registers[inst.rs] + imm_as_2c
+                        self.registers[inst.rs] + inst.imm
                     )
                     self.increment_pc()
                 case 12:
                     self.registers[inst.rt] = (
-                        self.registers[inst.rs] & imm_as_2c
+                        self.registers[inst.rs] & inst.imm
                     )
                     self.increment_pc()
                 case 13:
                     self.registers[inst.rt] = (
-                        self.registers[inst.rs] | imm_as_2c
+                        self.registers[inst.rs] | inst.imm
                     )
                     self.increment_pc()
                 case 14:
                     self.registers[inst.rt] = (
-                        self.registers[inst.rs] ^ imm_as_2c
+                        self.registers[inst.rs] ^ inst.imm
                     )
                     self.increment_pc()
                 case 15:
@@ -107,11 +115,11 @@ class Mips:
                     self.increment_pc()
                 case 35:
                     self.registers[inst.rt] = (
-                        self.memory[int(imm_as_2c + self.registers[inst.rs])]
+                        self.memory[inst.imm + self.registers[inst.rs]]
                     )
                     self.increment_pc()
                 case 43:
-                    self.memory[int(imm_as_2c + self.registers[inst.rs])] = (
+                    self.memory[inst.imm + self.registers[inst.rs]] = (
                         self.registers[inst.rt]
                     )
                     self.increment_pc()
@@ -132,16 +140,16 @@ class Mips:
         nl = '\n'
         regfile_output = []
         for i in range(32):
-            if int(self.registers[i]) != 0:
+            if self.registers[i] != 0:
                 regfile_output.append(
-                    f"{decode_reg[i]}: {int(self.registers[i])}")
+                    f"{decode_reg[i]}: {to_hex_str(self.registers[i])}")
         memfile_output = []
         for key, value in self.memory.items():
             part_of_program = (
                 int('0x00400000', 16) <= key <= int('0x0ffffffc', 16)
             )
             memfile_output.append(
-                f"{format(key, '#010x')}: {format(value, '#010x')}"
+                f"{format(key, '#010x')}: {to_hex_str(value)}"
                 f"{' (program)' if part_of_program else ''}"
             )
         return f"""Program counter:
