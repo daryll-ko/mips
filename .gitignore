@@ -1,5 +1,7 @@
 .DS_Store
-__pycache__/
+
+.pytest_cache/
+src/__pycache__/
 
 input.txt
 output.txt
