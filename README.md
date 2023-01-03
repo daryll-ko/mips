@@ -22,7 +22,7 @@ addi $t0, $s3, -12
 sub $t0, $t3, $t5
 ```
 
-Once the input file is set up, run `python3 main.py [-a] > output.txt` in your terminal of choice and the simulation output will show up in `output.txt`. Include the `-a` flag only if your input file already contains MIPS assembly code.
+Once the input file is set up, run `python3 src/main.py [-a] > output.txt` in your terminal of choice and the simulation output will show up in `output.txt`. Include the `-a` flag only if your input file already contains MIPS assembly code.
 
 After each instruction, the program outputs the entire [architectural state](https://en.wikipedia.org/wiki/Architectural_state).
 
