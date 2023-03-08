@@ -1,6 +1,9 @@
 # `mips`
 
-MIPS simulator written in Python. As of writing, this can interpret **machine code provided in hex** or **MIPS assembly code** and supports most common MIPS instructions.
+MIPS simulator written in Python. As of writing, this can:
+
+• disassemble **machine code provided in hex** (good coverage)
+• assemble **MIPS assembly code** (bad coverage)
 
 ## Usage
 
@@ -27,5 +30,7 @@ Once the input file is set up, run `python3 src/main.py [-a] > output.txt` in yo
 After each instruction, the program outputs the entire [architectural state](https://en.wikipedia.org/wiki/Architectural_state).
 
 ## Notes
+
+I should do this in Julia sometime...
 
 I used [Digital Design and Computer Architecture](https://www.amazon.com/Digital-Design-Computer-Architecture-Harris/dp/0123944244) extensively as a reference. Thanks, Harris & Harris!
