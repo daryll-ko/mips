@@ -2,8 +2,8 @@
 
 MIPS simulator written in Python. As of writing, this can:
 
-- disassemble **machine code provided in hex** (good coverage)
-- assemble **MIPS assembly code** (bad coverage)
+- disassemble machine code provided in hex (good coverage)
+- assemble MIPS assembly code (bad coverage)
 
 ## Usage
 
